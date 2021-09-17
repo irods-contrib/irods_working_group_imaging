@@ -8,6 +8,7 @@ Initial effort will be an OMERO integration.
 
 ## Minutes
 
+ - [20210916](20210916-minutes.md)
  - [20210715](20210715-minutes.md)
 
 ## Initial Design
