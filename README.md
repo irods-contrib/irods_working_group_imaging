@@ -12,6 +12,6 @@ Initial effort will be an OMERO integration.
  - [20210916](20210916-minutes.md)
  - [20210715](20210715-minutes.md)
 
-## Initial Design
+## Current Design
 
-![Initial Design](./omero-irods-integration.png)
+![Current Design](./omero-irods-integration-v2.png)
