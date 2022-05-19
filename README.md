@@ -18,4 +18,4 @@ Initial effort will be an OMERO integration.
 
 ## Current Design
 
-![Current Design](./omero-irods-integration-v2.png)
+![Current Design](./omero-irods-integration-v3.png)
