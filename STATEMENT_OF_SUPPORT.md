@@ -1,4 +1,6 @@
-# iRODS / OMERO Integration - Statement of Support
+https://github.com/irods-contrib/irods_working_group_imaging/blob/main/STATEMENT_OF_SUPPORT.md
+
+## iRODS / OMERO Integration - Statement of Support
 
 The following people support this effort to design, develop, and deploy a synchronization agent to bridge the open source iRODS Data Management platform and the open source OMERO image data platform.
 
