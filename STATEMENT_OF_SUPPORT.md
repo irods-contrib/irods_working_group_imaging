@@ -1,6 +1,6 @@
 # iRODS / OMERO Integration - Statement of Support
 
-The following people support this effort to design, develop, and deploy a synchronization agent to bridge the open source iRODS Data Management platform and the open source OMERO microscopy platform.
+The following people support this effort to design, develop, and deploy a synchronization agent to bridge the open source iRODS Data Management platform and the open source OMERO image data platform.
 
 - Terrell Russell (iRODS Consortium)
 - Josh Moore (OMERO)
