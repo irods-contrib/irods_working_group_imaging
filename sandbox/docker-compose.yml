@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+    irods-catalog:
+        build:
+            context: irods_catalog
+        environment:
+            - POSTGRES_PASSWORD=testpassword
+
+    irods-catalog-provider:
+        build:
+            context: irods_catalog_provider
+        depends_on:
+            - irods-catalog
+
+    irods-client-nfsrods:
+        image: irods/nfsrods:2.1.0
+        ports:
+            - "2049:2049"
+        volumes:
+            - "./irods_client_nfsrods/nfsrods_config:/nfsrods_config:ro"
+            - "./irods_client_nfsrods/passwd:/etc/passwd:ro"
+        depends_on:
+            - irods-catalog-provider
+
+    omero-db:
+        image: postgres:12
+        environment:
+            - POSTGRES_PASSWORD=postgres
+
+    omero:
+        image: openmicroscopy/omero-server:5
+        environment:
+            - CONFIG_omero_db_user=postgres
+            - CONFIG_omero_db_pass=postgres
+            - CONFIG_omero_db_name=postgres
+            - CONFIG_omero_db_host=omero-db
+            - CONFIG_omero_db_port=5432
+            - ROOTPASS=omero-root-password
+        ports:
+            - "4063:4063"
+            - "4064:4064"
+        volumes:
+            - ./irods_client_nfsrods/nfsrods_mount/home/omero-server:/OMERO
+        depends_on:
+            - omero-db
+            - irods-client-nfsrods
+
+# TODO: use docker volumes to make NFS mount easier?
+#volumes:
+#    nfs_mount_volume:
+#        driver_opts:
+#            type: "nfs"
+#            device: ":/var/docker-nfs"
+#            o: "addr=irods-client-nfsrods,vers=4,soft"
