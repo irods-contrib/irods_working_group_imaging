@@ -15,9 +15,9 @@ docker-compose up irods-catalog-provider
 
 ```
 # set up NFSRODS
-docker exec -u irods omerorods_irods-catalog-provider_1 iadmin mkuser omero-server rodsuser
+docker exec -u irods sandbox_irods-catalog-provider_1 iadmin mkuser omero-server rodsuser
 docker-compose up irods-client-nfsrods
-export NFSRODS_IPADDRESS=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' omerorods_irods-client-nfsrods_1)
+export NFSRODS_IPADDRESS=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sandbox_irods-client-nfsrods_1)
 export MYMOUNTDIR=${PWD}/irods_client_nfsrods/nfsrods_mount
 mkdir -p ${MYMOUNTDIR}
 sudo mount ${NFSRODS_IPADDRESS}:/ ${MYMOUNTDIR}
