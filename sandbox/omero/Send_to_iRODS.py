@@ -114,7 +114,7 @@ def transfer_to_irods_as_admin(source:str):
             **ssl_settings) as session:
 
         # Tranfer the package
-        logical_path = "/{0.zone}/home/{0.username}/{1}".format(session, source)
+        logical_path = "/{0.zone}/home/{0.user}/{1}".format(session, source)
         session.data_objects.put(source, logical_path)
 
 
@@ -123,7 +123,7 @@ def transfer_to_irods(source:str):
     import ssl
     from irods.session import iRODSSession
 
-    with iRODSSession(host='100.25.138.231', port=1247, user='rods', password='rods', zone='tempZone') as session:
+    with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
 
         # Tranfer the package
         logical_path = "/{0.zone}/home/{0.username}/{1}".format(session, source)
@@ -175,7 +175,7 @@ def run_script():
     client = scripts.client(
         "Send_to_iRODS.py",
         """Archive multiple images to iRODS in a zip file. \
-See https://www..openmicroscopy.org/export.html#iRODS for more information""",
+See https://www.openmicroscopy.org/export.html#iRODS for more information""",
         scripts.String(
             "Data_Type",
             optional=False,
