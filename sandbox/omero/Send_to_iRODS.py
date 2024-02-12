@@ -97,7 +97,7 @@ def invoke_omero_transfer(conn, command: List[str]):
     cli.onecmd(pre_arguments + command + post_arguments)
 
 
-def transfer_to_irods_as_admin(source:str):
+def transfer_to_irods_as_admin(source:str, output_path:str):
     import os
     import ssl
     from irods.session import iRODSSession
@@ -114,25 +114,24 @@ def transfer_to_irods_as_admin(source:str):
             **ssl_settings) as session:
 
         # Tranfer the package
-        logical_path = "/{0.zone}/home/{0.user}/{1}".format(session, source)
-        session.data_objects.put(source, logical_path)
+        session.data_objects.put(source, output_path)
 
 
-def transfer_to_irods(source:str):
+def transfer_to_irods(source:str, output_path:str):
     import os
     import ssl
     from irods.session import iRODSSession
 
+
     with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
 
         # Tranfer the package
-        logical_path = "/{0.zone}/home/{0.username}/{1}".format(session, source)
-        session.data_objects.put(source, logical_path)
+        session.data_objects.put(source, output_path)
 
 
 def send_to_irods(conn, script_params):
-    # for params with default values, we can get the value directly
     data_type = script_params["Data_Type"]
+    output_path = script_params["Path"]
 
     # Get the images or datasets
     message = ""
@@ -158,7 +157,7 @@ def send_to_irods(conn, script_params):
     for img in images:
         log("Processing image: ID %s: %s" % (img.id, img.getName()))
         invoke_omero_transfer(conn, [f"Image:{img.id}"])
-        transfer_to_irods("transfer.tar")
+        transfer_to_irods("transfer.tar", output_path)
 
     message = "transfered"
     return message
@@ -190,6 +189,12 @@ See https://www.openmicroscopy.org/export.html#iRODS for more information""",
             grouping="2",
             description="List of Dataset IDs or Image IDs",
         ).ofType(rlong(0)),
+        scripts.List(
+            "Path",
+            optional=False,
+            grouping="3",
+            description="Path to which your archive should be uploaded",
+        ).ofType(rstring("Path")),
         version="0.1.0",
         authors=["Josh Moore", "OME Team"],
         institutions=["German BioImaging"],
