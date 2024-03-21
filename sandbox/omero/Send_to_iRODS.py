@@ -98,7 +98,6 @@ def invoke_omero_transfer(conn, command: List[str]):
 
 
 def transfer_to_irods_as_admin(source:str, output_path:str):
-    import os
     import ssl
     from irods.session import iRODSSession
     try:
@@ -116,16 +115,23 @@ def transfer_to_irods_as_admin(source:str, output_path:str):
         # Tranfer the package
         session.data_objects.put(source, output_path)
 
+def transfer_from_irods(logical_path:str, local_path:str):
+    from irods.session import iRODSSession
+    with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
+        try:
+            # get iRODS object information
+            log('Getting [{}] from iRODS...'.format(logical_path))
+            session.data_objects.get(logical_path, local_path)
+            log('- Complete')
+        except Exception as e:
+            # Something went wrong
+            log('- ERROR: {}'.format(type(e)))
+
 
 def transfer_to_irods(source:str, output_path:str):
     import irods
-    import os
-    import ssl
     from irods.session import iRODSSession
-
-
     with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
-
         try:
             # Check for existence
             log('Checking existence of [{}] in iRODS...'.format(output_path))
