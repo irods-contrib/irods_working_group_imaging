@@ -128,13 +128,13 @@ def transfer_from_irods(logical_path:str, local_path:str):
             log('- ERROR: {}'.format(type(e)))
 
 
-def transfer_to_irods(source:str, output_path:str):
+def transfer_to_irods(as_user:str, source:str, output_path:str):
     import irods
     from irods.session import iRODSSession
-    with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
+    with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone', client_user=as_user) as session:
         try:
             # Check for existence
-            log('Checking existence of [{}] in iRODS...'.format(output_path))
+            log('As [{}], checking existence of [{}] in iRODS...'.format(as_user, output_path))
             session.data_objects.get(output_path)
             log('- Found in iRODS - Skipping.'.format(output_path))
         except irods.exception.DataObjectDoesNotExist as e:
@@ -146,6 +146,7 @@ def transfer_to_irods(source:str, output_path:str):
 def send_to_irods(conn, script_params):
     data_type = script_params["Data_Type"]
     output_path = script_params["Path"]
+    as_user = script_params["iRODS_User"]
 
     # Get the images or datasets
     message = ""
@@ -171,7 +172,7 @@ def send_to_irods(conn, script_params):
     for img in images:
         log("Processing image: ID %s: %s" % (img.id, img.getName()))
         invoke_omero_transfer(conn, [f"Image:{img.id}"])
-        transfer_to_irods("transfer.tar", output_path)
+        transfer_to_irods(as_user, "transfer.tar", output_path)
 
     message = "transferred"
     return message
@@ -208,6 +209,12 @@ See https://www.openmicroscopy.org/export.html#iRODS for more information""",
             optional=False,
             grouping="3",
             description="iRODS Logical Path to which your archive should be uploaded",
+        ),
+        scripts.String(
+            "iRODS_User",
+            optional=False,
+            grouping="4",
+            description="iRODS User to proxy for",
         ),
         version="0.1.0",
         authors=["Josh Moore", "OME Team"],
