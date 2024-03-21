@@ -118,6 +118,7 @@ def transfer_to_irods_as_admin(source:str, output_path:str):
 
 
 def transfer_to_irods(source:str, output_path:str):
+    import irods
     import os
     import ssl
     from irods.session import iRODSSession
@@ -125,9 +126,16 @@ def transfer_to_irods(source:str, output_path:str):
 
     with iRODSSession(host='irods-catalog-provider', port=1247, user='rods', password='rods', zone='tempZone') as session:
 
-        # Tranfer the package
-        session.data_objects.put(source, output_path)
-
+        try:
+            # Check for existence
+            log('Checking existence of [{}] in iRODS...'.format(output_path))
+            session.data_objects.get(output_path)
+            log('- Found in iRODS - Skipping.'.format(output_path))
+        except irods.exception.DataObjectDoesNotExist as e:
+            # Transfer the package
+            log('- Transferring...'.format(output_path))
+            session.data_objects.put(source, output_path)
+            log('- Complete.')
 
 def send_to_irods(conn, script_params):
     data_type = script_params["Data_Type"]
