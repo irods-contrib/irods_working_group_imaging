@@ -20,3 +20,11 @@ $ docker exec -it -u irods sandbox-irods-catalog-provider-1 ils -l
 /tempZone/home/rods:
   rods              0 demoResc        20480 2024-01-12.02:43 & transfer.tar
 ```
+
+live development...
+```
+# replace script with new version
+omero script replace Send_to_iRODS.py Send_to_iRODS.py
+# proxies as alice
+omero script launch /Send_to_iRODS.py IDs=${IMAGE##Image:} iRODS_User=alice Path=/tempZone/home/alice/1146
+```
