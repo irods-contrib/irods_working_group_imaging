@@ -167,7 +167,7 @@ def send_to_irods(conn, script_params):
         invoke_omero_transfer(conn, [f"Image:{img.id}"])
         transfer_to_irods("transfer.tar", output_path)
 
-    message = "transfered"
+    message = "transferred"
     return message
 
 
@@ -201,7 +201,7 @@ See https://www.openmicroscopy.org/export.html#iRODS for more information""",
             "Path",
             optional=False,
             grouping="3",
-            description="Path to which your archive should be uploaded",
+            description="iRODS Logical Path to which your archive should be uploaded",
         ),
         version="0.1.0",
         authors=["Josh Moore", "OME Team"],
