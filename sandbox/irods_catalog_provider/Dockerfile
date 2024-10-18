@@ -29,8 +29,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
-ARG irods_version=4.3.0
-ARG irods_package_version_suffix=-1~focal
+ARG irods_version=4.3.1
+ARG irods_package_version_suffix=-0~focal
 ARG irods_package_version=${irods_version}${irods_package_version_suffix}
 
 RUN apt-get update && \
@@ -38,6 +38,7 @@ RUN apt-get update && \
         irods-database-plugin-postgres=${irods_package_version} \
         irods-runtime=${irods_package_version} \
         irods-server=${irods_package_version} \
+        irods-icommands=${irods_package_version} \
     && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/*
