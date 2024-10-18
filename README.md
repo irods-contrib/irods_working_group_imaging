@@ -8,6 +8,7 @@ Initial effort will be an OMERO integration.
 
 ## Minutes
 
+ - [20241017](20241017-minutes.md)
  - [20240919](20240919-minutes.md)
  - [20240815](20240815-minutes.md)
  - [20240717](20240717-minutes.md)
