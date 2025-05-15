@@ -1,0 +1,6 @@
+# Ignore MinIO data
+*
+# Don't ignore .gitignore
+!.gitignore
+# Don't ignore default demobucket
+!demobucket
